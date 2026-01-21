@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  web-uygulamam:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dotnet-web-app
+    ports:
+      - "9090:8080" # Dışarıdan 9090 ile bağlanacağız, içeride uygulama 8080 dinliyor
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    restart: always
