@@ -1,14 +1,25 @@
 version: '3.8'
-
 services:
-  web-uygulamam:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: dotnet-web-app
+  jenkins:
+    build: .
+    container_name: jenkins-k8s-proje
+    privileged: true
+    user: root
     ports:
-      - "9090:8080" # Dışarıdan 9090 ile bağlanacağız, içeride uygulama 8080 dinliyor
+      - "8080:8080"
+      - "50000:50000"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:8080
+      - DOCKER_TLS_CERTDIR=
+      - KUBECONFIG=/var/jenkins_home/.kube/config
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      # Docker soket bağlantısı
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Kubeconfig bağlantısı (Windows yolu)
+      - C:/Users/CihanAbay/.kube:/var/jenkins_home/.kube:ro
+      # Minikube sertifikaları (Windows yolu)
+      - C:/Users/CihanAbay/.minikube:/var/jenkins_home/.minikube:ro
     restart: always
+
+volumes:
+  jenkins_home:
