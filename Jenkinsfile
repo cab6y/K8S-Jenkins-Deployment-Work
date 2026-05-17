@@ -40,28 +40,19 @@ pipeline {
             }
         }
         
-        stage('☸️  Kubernetes Deploy') {
+       stage('☸️  Kubernetes Deploy') {
             steps {
                 script {
                     echo "🚀 Kubernetes deployment güncelleniyor..."
                     
-                    // Deployment var mı kontrol et
                     sh """
+                        export KUBECONFIG=/var/jenkins_home/.kube/config
                         if ! kubectl get deployment ${DEPLOYMENT_NAME} &> /dev/null; then
                             echo "⚠️  Deployment bulunamadı, oluşturuluyor..."
                             kubectl apply -f deployment.yaml
                         fi
-                    """
-                    
-                    // Yeni imajı set et
-                    sh """
                         kubectl set image deployment/${DEPLOYMENT_NAME} \
-                            ${DEPLOYMENT_NAME}=${DOCKER_HUB_REPO}:${IMAGE_TAG} \
-                            --record
-                    """
-                    
-                    // Rollout'u bekle
-                    sh """
+                            ${DEPLOYMENT_NAME}=${DOCKER_HUB_REPO}:${IMAGE_TAG}
                         kubectl rollout status deployment/${DEPLOYMENT_NAME} --timeout=180s
                     """
                 }
@@ -71,18 +62,10 @@ pipeline {
         stage('✅ Verify') {
             steps {
                 script {
-                    echo "🔍 Deployment durumu kontrol ediliyor..."
                     sh """
-                        echo "📊 Pod Durumu:"
+                        export KUBECONFIG=/var/jenkins_home/.kube/config
                         kubectl get pods -l app=${DEPLOYMENT_NAME} -o wide
-                        
-                        echo ""
-                        echo "📜 Rollout Geçmişi:"
                         kubectl rollout history deployment/${DEPLOYMENT_NAME} | tail -5
-                        
-                        echo ""
-                        echo "🎉 Deployment başarılı!"
-                        echo "🏷️  Yeni imaj: ${DOCKER_HUB_REPO}:${IMAGE_TAG}"
                     """
                 }
             }
