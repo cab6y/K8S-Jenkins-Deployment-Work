@@ -4,7 +4,7 @@ pipeline {
     environment {
         // Docker Hub bilgileri
         DOCKER_HUB_REPO = 'cab6y/web-uygulamam'
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
+        DOCKER_CREDENTIALS_ID = 'cab6y'
         
         // Kubernetes
         DEPLOYMENT_NAME = 'web-uygulamam'
