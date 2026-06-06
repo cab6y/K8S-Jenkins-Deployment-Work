@@ -27,13 +27,13 @@ spec:
           limits:
             memory: "256Mi"
             cpu: "200m"
----
+--- 
 apiVersion: v1
 kind: Service
 metadata:
   name: web-uygulamam
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: web-uygulamam
   ports:
