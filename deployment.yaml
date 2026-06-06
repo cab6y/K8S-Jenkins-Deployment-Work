@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: web-uygulamam
-        image: cab6y/web-uygulamam:latest
+        image: cihanacrregistry.azurecr.io/web-uygulamam:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
