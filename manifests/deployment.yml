@@ -1,19 +1,41 @@
-apiVersion : apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webuygulamam 
+  name: web-uygulamam
+  labels:
+    app: web-uygulamam
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: webuygulamam
+      app: web-uygulamam
   template:
     metadata:
       labels:
-        app: webuygulamam 
+        app: web-uygulamam
     spec:
       containers:
-        - name: webuygulamam 
-          image: cihanacrregistry.azurecr.io/webuygulamam
-          ports:
-          - containerPort: 8080
+      - name: web-uygulamam
+        image: cihanacrregistry.azurecr.io/web-uygulamam:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-uygulamam
+spec:
+  type: LoadBalancer
+  selector:
+    app: web-uygulamam
+  ports:
+  - port: 8080
+    targetPort: 8080
