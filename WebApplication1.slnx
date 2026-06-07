@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/manifests/">
-    <File Path="../manifests/deployment.yaml" />
+    <File Path="../manifests/deployment.yml" />
   </Folder>
   <Project Path="WebApplication1.csproj" />
 </Solution>
