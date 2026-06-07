@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: webuygulamam 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webuygulamam
+  template:
+    metadata:
+      labels:
+        app: webuygulamam 
+    spec:
+      containers:
+        - name: webuygulamam 
+          image: cihanacrregistry.azurecr.io/webuygulamam
+          ports:
+          - containerPort: 8080
